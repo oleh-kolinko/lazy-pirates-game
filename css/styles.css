@@ -1,0 +1,64 @@
+body{
+  font-family: Arial;
+}
+#playable-area{
+  position: relative;
+  width: 512px;
+  height: 512px;
+  margin: 0 auto;
+  background-color: lightgreen;
+}
+.tile{
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  float: left;
+}
+
+.train{
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  background-color: red;
+  transition: 1s linear;
+
+  background-size: 90px;
+  background-position: center;
+  background-image: url('http://images.freeimages.com/images/premium/large-thumbs/5525/55259734-transportation-train-flat-icon-with-long-shadow-eps10.jpg');
+}
+
+.switch{
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  opacity: 0.1;
+  background-color: green;
+  cursor: pointer;
+}
+
+.horizontal{
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.vertical{
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.top-right{
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+}
+.top-left{
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.bottom-right{
+  border-left: 1px solid #000;
+  border-top: 1px solid #000;
+}
+.bottom-left{
+  border-right: 1px solid #000;
+  border-top: 1px solid #000;
+}
