@@ -27,7 +27,9 @@ body{
   background-position: center;
   background-image: url('http://images.freeimages.com/images/premium/large-thumbs/5525/55259734-transportation-train-flat-icon-with-long-shadow-eps10.jpg');
 }
-
+.house{
+  border: 2px solid red;
+}
 .switch{
   position: absolute;
   width: 64px;
