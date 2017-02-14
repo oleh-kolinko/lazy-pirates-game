@@ -50,7 +50,7 @@ body{
   border-radius: 32px;
   opacity: 0.1;
   background-color: green;
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 .start{
   border: 2px solid green;
