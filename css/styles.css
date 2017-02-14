@@ -1,6 +1,15 @@
 body{
   font-family: Arial;
 }
+#header{
+  width: 512px;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: pink;
+}
+#score{
+
+}
 #playable-area{
   position: relative;
   width: 512px;
@@ -17,11 +26,12 @@ body{
 
 .train{
   position: absolute;
+  transform: scale(0.7);
   width: 64px;
   height: 64px;
   border-radius: 32px;
   background-color: red;
-  transition: 1s linear;
+  transition: .65s linear;
 
   background-size: 90px;
   background-position: center;
@@ -38,6 +48,15 @@ body{
   opacity: 0.1;
   background-color: green;
   cursor: pointer;
+}
+.start{
+  border: 2px solid green;
+}
+.switch:hover{
+  opacity: 0.2;
+}
+.horizontal,.vertical,.top-right,.top-left,.bottom-right,.bottom-left{
+  background-color: lightblue;
 }
 
 .horizontal{

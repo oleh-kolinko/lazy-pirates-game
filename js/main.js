@@ -7,9 +7,9 @@ var level1 = [
   [ null , '||' , null , 'h1' , null , '⎿' , '==' , 'h0' ],//4
   [ null , '⎿' , '⏋' , null , null , '||' , null , null ],//5
   [ null , null , '||' , null , null , 'h2' , null , null ],//6
-  [ null , null , '||' , null , null , null , null , null ],//7
+  [ 's>' , '==' , '⏌' , null , null , null , null , null ],//7
 ];
-//st - start
+//s>,<s - start
 //h#  - house#
 //vertical      ||
 //horizontal    ==
@@ -24,11 +24,21 @@ var tileSize = 64;
 var trains = []; // All trains
 var railSwitches = []; //All switches
 var houses = []; //All houses
+var start = {}; //Starting point
 
+var timer = {
+  time : 61,
+  html : $('#timer-value')
+};
+var score = {
+  correct : 0 ,
+  total : 0,
+  html : $('#score-value')
+};
 
 //Test
- trains[0] = new Train(2,7);
-trains[0].direction.y = -1;
+// trains[0] = new Train(0,7);
+// trains[0].direction.x = 1;
 
 
 
@@ -42,26 +52,58 @@ init();
 
 
 function update(){
-  trains.forEach(function(train){
-    moveTrain(train);
+
+  //Delete trains:
+  trains = trains.filter(function(train){
+    return !(train.finished);
   });
+
+
+  //Move all trains:
+  trains.forEach(function(train){
+        moveTrain(train);
+  });
+
+  createTrains(2);//Create New trains
+}
+
+function timerUpdate(){
+  if(timer.time > 0){
+    timer.time --; //Decrese time
+    $(timer.html).html(convertSeconds2Minutes(timer.time));//Update time on DOM
+  }
+}
+function scoreUpdate(){
+  $(score.html).html(score.correct + " of " + score.total);//Update Score on DOM
 
 }
 
 //Starting function
 function init(){
   render(level1);//Initial rendering of level
-  setInterval(update,1000); //Update every second
+  setInterval(update,650); //Update train movement every second
+  setInterval(timerUpdate,1000); //Update timer
 
   //Add click events to all railRoad Switches:
   railSwitches.forEach(function (railSwitch){
     $(railSwitch.body).click(function(){
-      console.log('switch click');
       railSwitch.toggleState();
       level1[railSwitch.y][railSwitch.x] = railSwitch.currentState;
       render(level1);
     });
   });
+
+}
+
+var funcCalledcounter = 3;//temp
+function createTrains(colorsAmount){
+  funcCalledcounter ++ ;
+  if(funcCalledcounter % 4 !==0   ||   timer.time === 0){
+    return;
+  }
+
+  var color = Math.floor(Math.random() * (colorsAmount + 1));
+  trains.push( new Train (start.x, start.y, color));
 
 }
 
@@ -72,14 +114,27 @@ var htmlTile;
     row.forEach(function(tile,x){
       tileDOM = $('.pos'+ y + x );
       if( tile !== null ){
+        var className = tile2class(tile);//Class name of current tile
 
-        if(tile2class(tile) === 'house'){  //Create House
-          var newColor = tile[1]; //STRING
+        if(className === 'house'){  //Create House
+          var newColor = parseInt(tile[1]);
           if(!houses[newColor]){  //Check if that house is alredy exists
             var newHouse = new House(newColor, x , y);
             newHouse.body = tileDOM; //Give house reference to its tile
+            $(newHouse.body).html(newColor);
             houses[newColor] = newHouse;
           }
+        }
+
+        if(className === 'start'){
+          start.x = x;
+          start.y = y;
+          start.body = tileDOM;
+          // if(tile === 's>'){
+          //   start.direction = 1;//Start to the right
+          // } else{
+          //   start.direction = -1;//Start to the left
+          // }
         }
 
         $(tileDOM).attr('class', 'tile pos'+ y + x);//Clear all classes
