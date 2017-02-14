@@ -86,7 +86,7 @@ function init(){
 
   //Add click events to all railRoad Switches:
   railSwitches.forEach(function (railSwitch){
-    $(railSwitch.body).click(function(){
+    $(railSwitch.body).on('click tap',function(){
       railSwitch.toggleState();
       level1[railSwitch.y][railSwitch.x] = railSwitch.currentState;
       render(level1);
