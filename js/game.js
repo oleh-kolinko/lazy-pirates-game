@@ -4,6 +4,7 @@ class Train
     this.x = x;
     this.y = y;
     this.color = color;
+    this.rotation = 0;
     this.finished = false; //Reached house
     //Direction:
     //x - horizontal    1 (right)  -1 (left)
@@ -11,7 +12,7 @@ class Train
      this.direction = { x : 0 , y : 0};
 
     //Add to DOM
-    var trainHtml = '<div class="train">'+this.color+'</div>';
+    var trainHtml = '<div class="train"></div>';
     this.body = $(trainHtml).appendTo($('#playable-area'));
     updatePositionCSS(this);
   }
@@ -37,9 +38,17 @@ class RailSwitch
   toggleState (){
     if(this.currentState === this.state1){
       this.currentState = this.state2;
+
+      console.log($('.pos'+ this.y + this.x));
+      console.log(tile2class(this.currentState));
+
     }else{
       this.currentState = this.state1;
+
     }
+    
+    $(('.pos'+ this.y + this.x)).attr('class', 'tile pos'+ this.y + this.x);//   TEMP
+    $(('.pos'+ this.y + this.x)).addClass( tile2class(this.currentState) ); //TEMP
   }
 
 }//End of class
@@ -52,7 +61,10 @@ class House {
 
   }
 }//End of class
-
+function rotate(object, deg){
+  object.rotation += deg;
+  $(object.body).css('transform','rotate('+ object.rotation +'deg)');
+}
 
 function moveTrain (train){
   var currentLevel = level1;
@@ -69,10 +81,12 @@ function moveTrain (train){
         train.direction.y = -1;//go up
         train.direction.x = 0;
         train.y += train.direction.y;
+        rotate(train, 90);
       }else{
         train.direction.y = 0;
         train.direction.x = 1;//go right
         train.x += train.direction.x;
+        rotate(train, -90);
       }
     break;
     case "⏌":
@@ -80,10 +94,12 @@ function moveTrain (train){
         train.direction.y = -1; //go up
         train.direction.x = 0;
         train.y += train.direction.y;
+        rotate(train, -90);
       }else{
         train.direction.y = 0;
         train.direction.x = -1;//go left
         train.x += train.direction.x;
+        rotate(train, 90);
       }
     break;
     case '⎾':
@@ -91,10 +107,12 @@ function moveTrain (train){
       train.direction.y = 1; //go down
       train.direction.x = 0;
       train.y += train.direction.y;
+      rotate(train, -90);
     }else{
       train.direction.y = 0;
       train.direction.x = 1;//go right
       train.x += train.direction.x;
+      rotate(train, 90);
     }
     break;
     case '⏋':
@@ -102,15 +120,18 @@ function moveTrain (train){
       train.direction.y = 1; //go down
       train.direction.x = 0;
       train.y += train.direction.y;
+      rotate(train, 90);
     }else{
       train.direction.y = 0;
       train.direction.x = -1;//go left
       train.x += train.direction.x;
+      rotate(train, -90);
     }
     break;
     case 's>':
       train.direction.x = 1;//go right
       train.x += train.direction.x;
+      rotate(train, 90);
     break;
     case '<s':
       train.direction.x = -1;//go right

@@ -1,0 +1,100 @@
+#header{
+  box-sizing:inherit;
+  width: 832px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: pink;
+}
+#score{
+
+}
+#playable-area{
+  position: relative;
+  width: 832px;
+  height: 640px;
+  margin: 0 auto;
+}
+#map{
+  position: absolute;
+  width: 832px;
+  height: 640px;
+  background-image: url('../img/level1.png');
+  z-index: 1;
+}
+#water{
+  position: absolute;
+  width: 832px;
+  height: 640px;
+  background-image: url('../img/water1.png');
+	background-repeat: repeat;
+  z-index: -1;
+	animation: animateWater 60s linear infinite;
+}
+@keyframes animateWater {
+  from { background-position: 0 0; }
+	to { background-position: 100% 100%; }
+}
+
+.tile{
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  float: left;
+}
+
+.train{
+  position: absolute;
+  transform: scale(1);
+  width: 64px;
+  height: 64px;
+  transition: top .85s linear,left .85s linear,transform .5s;
+  z-index: 1;
+}
+.house{
+  border: 2px solid red;
+  z-index: 2;
+}
+.switch{
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  opacity: 0.1;
+  background-color: green;
+  z-index: 3;
+  /*cursor: pointer;*/
+}
+.start{
+  border: 2px solid green;
+}
+.switch:hover{
+  opacity: 0.2;
+}
+.horizontal,.vertical,.top-right,.top-left,.bottom-right,.bottom-left{
+  z-index: 2;
+}
+
+.horizontal{
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.vertical{
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.top-right{
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+}
+.top-left{
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+.bottom-right{
+  border-left: 1px solid #000;
+  border-top: 1px solid #000;
+}
+.bottom-left{
+  border-right: 1px solid #000;
+  border-top: 1px solid #000;
+}

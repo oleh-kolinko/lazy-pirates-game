@@ -1,89 +1,28 @@
 html {
+  margin: 0;
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(0,0,0, 0);
 }
+button{
+  outline: none;
+}
 body{
-  font-family: Arial;
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
 }
-#header{
-  width: 512px;
-  /*padding: 10px;*/
-  margin: 0 auto;
-  background-color: pink;
+#start-screen{
+  padding-top: 100px;
+  top: 0;
+  left: 0;
+  height: 800px;
+  background: linear-gradient(to bottom, #d3959b 0%,#dad299 100%);
+  text-align: center;
 }
-#score{
+#start-screen h1{
+  font-size: 1.8em;
+  font-weight: bold;
 
 }
-#playable-area{
-  position: relative;
-  width: 512px;
-  height: 512px;
-  margin: 0 auto;
-  background-color: lightgreen;
-}
-.tile{
-  box-sizing: border-box;
-  width: 64px;
-  height: 64px;
-  float: left;
-}
-
-.train{
-  position: absolute;
-  transform: scale(0.7);
-  width: 64px;
-  height: 64px;
-  border-radius: 32px;
-  background-color: red;
-  transition: .65s linear;
-
-  background-size: 90px;
-  background-position: center;
-  background-image: url('http://images.freeimages.com/images/premium/large-thumbs/5525/55259734-transportation-train-flat-icon-with-long-shadow-eps10.jpg');
-}
-.house{
-  border: 2px solid red;
-}
-.switch{
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  border-radius: 32px;
-  opacity: 0.1;
-  background-color: green;
-  /*cursor: pointer;*/
-}
-.start{
-  border: 2px solid green;
-}
-.switch:hover{
-  opacity: 0.2;
-}
-.horizontal,.vertical,.top-right,.top-left,.bottom-right,.bottom-left{
-  background-color: lightblue;
-}
-
-.horizontal{
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-}
-.vertical{
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-}
-.top-right{
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #000;
-}
-.top-left{
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-}
-.bottom-right{
-  border-left: 1px solid #000;
-  border-top: 1px solid #000;
-}
-.bottom-left{
-  border-right: 1px solid #000;
-  border-top: 1px solid #000;
+#start-screen p {
+  font-size: 1.2em;
 }

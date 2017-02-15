@@ -1,56 +1,76 @@
-var level1 = [
-  // 0      1      2      3      4      5      6      7
-  [ null , null , null , null , null , null , null , null ],//0
-  [ null , '⎾' , '==' , '==' , '==' , '⏋' , null , null ],//1
-  [ null , '||' , null , '||' , null , '||' , null , null ],//2
-  [ null , '||' , null , '||' , null , '||' , null , null ],//3
-  [ null , '||' , null , 'h1' , null , '⎿' , '==' , 'h0' ],//4
-  [ null , '⎿' , '⏋' , null , null , '||' , null , null ],//5
-  [ null , null , '||' , null , null , 'h2' , null , null ],//6
-  [ 's>' , '==' , '⏌' , null , null , null , null , null ],//7
-];
-//s>,<s - start
-//h#  - house#
-//vertical      ||
-//horizontal    ==
-//top-right     ⎿
-//top-left      ⏌
-//bottom-right ⎾
-//bottom-left   ⏋
 
-//GLOBAL VARIABLES:
-var playableArea = $('#playable-area');
-var tileSize = 64;
-var trains = []; // All trains
-var railSwitches = []; //All switches
-var houses = []; //All houses
-var start = {}; //Starting point
+startMenu();
 
-var timer = {
-  time : 61,
-  html : $('#timer-value')
-};
-var score = {
-  correct : 0 ,
-  total : 0,
-  html : $('#score-value')
-};
+function startMenu(){
+  $('#game').fadeOut(0);
+
+  // $('#start-slide-text h1, #start-slide-text p, .btn-group').hide();
+  // $('#start-slide-text h1').fadeIn(1000);
+  // $('#start-slide-text p:nth-child(2)').fadeIn(2000,function(){
+  //   $('#start-slide-text p:nth-child(3)').fadeIn(2000,function(){
+  //     $('#start-slide-text p:nth-child(4)').fadeIn(2000,function(){
+  //       $('#start-slide-text .btn-group').fadeIn(2000);
+  //   });
+  //   });
+  // });
+
+ $('#start-slide-text button').click(function(e){
+   var id = $(e.currentTarget).attr('id');
+   if( id === 'easy-btn'){
+     currentLevel = level1;
+   }else if( id === 'normal-btn'){
+     currentLevel = level1;
+   }else{
+     currentLevel = level1;
+   }
+
+   $('#start-screen').slideUp(1000);
+   $('#game').fadeIn(2000);
+   init();
+ });
+
+}
 
 //Test
-// trains[0] = new Train(0,7);
-// trains[0].direction.x = 1;
 
 
+railSwitches[0] = new RailSwitch(3,1,'==','⎾');
+railSwitches[1] = new RailSwitch(6,4,'||','⎾');
 
-railSwitches[0] = new RailSwitch(3,1,'==','⏋');
-railSwitches[1] = new RailSwitch(5,4,'⎿','||');
 
 //End Test
 
-init();
+
+//Starting function
+function init(){
+  createGrid(level1);
 
 
+  render(level1);//Initial rendering of level
+  setInterval(update,750); //Update train movement every second
+  setInterval(timerUpdate,1000); //Update timer
 
+  //Add click events to all railRoad Switches:
+  railSwitches.forEach(function (railSwitch){
+    $(railSwitch.body).on('click',function(){
+      railSwitch.toggleState();
+      level1[railSwitch.y][railSwitch.x] = railSwitch.currentState;
+      render(level1);
+    });
+  });
+
+  initPortColors();
+}
+
+function initPortColors(){
+  var colors = ['#d62d20','#008744','#FFA700'];
+  houses.forEach(function(house,i){
+    $(house.body).css('background-color',colors[i]);
+  });
+}
+
+
+//************************************************************ ->  UPDATE
 function update(){
 
   //Delete trains:
@@ -78,22 +98,7 @@ function scoreUpdate(){
 
 }
 
-//Starting function
-function init(){
-  render(level1);//Initial rendering of level
-  setInterval(update,650); //Update train movement every second
-  setInterval(timerUpdate,1000); //Update timer
 
-  //Add click events to all railRoad Switches:
-  railSwitches.forEach(function (railSwitch){
-    $(railSwitch.body).on('click',function(){
-      railSwitch.toggleState();
-      level1[railSwitch.y][railSwitch.x] = railSwitch.currentState;
-      render(level1);
-    });
-  });
-
-}
 
 var funcCalledcounter = 3;//temp
 function createTrains(colorsAmount){
@@ -103,8 +108,23 @@ function createTrains(colorsAmount){
   }
 
   var color = Math.floor(Math.random() * (colorsAmount + 1));
-  trains.push( new Train (start.x, start.y, color));
+  var newTrain = new Train (start.x, start.y, color);
+  $(newTrain.body).css('background-image', 'url("img/boat'+ color +'.png")');
+  trains.push( newTrain );
 
+}
+
+//************************************************************ ->  RENDER GRID
+
+function createGrid(level){
+  var tileHtml = '';
+
+  level.forEach(function(row, y){
+    row.forEach(function(tile, x){
+       tileHtml = '<div class="tile pos'+y+x+'"></div>';
+       $(playableArea).append(tileHtml);
+    });
+  });
 }
 
 //Render map from matrix:
@@ -121,8 +141,7 @@ var htmlTile;
           if(!houses[newColor]){  //Check if that house is alredy exists
             var newHouse = new House(newColor, x , y);
             newHouse.body = tileDOM; //Give house reference to its tile
-            $(newHouse.body).html(newColor);
-            houses[newColor] = newHouse;
+            houses[newColor] = newHouse; // push into array
           }
         }
 
@@ -137,8 +156,8 @@ var htmlTile;
           // }
         }
 
-        $(tileDOM).attr('class', 'tile pos'+ y + x);//Clear all classes
-        $(tileDOM).addClass( tile2class(tile) );
+        // $(tileDOM).attr('class', 'tile pos'+ y + x);//Clear all classes
+        // $(tileDOM).addClass( tile2class(tile) );
       }
     });
   });

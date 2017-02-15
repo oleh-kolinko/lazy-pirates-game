@@ -3,95 +3,51 @@
   <head>
     <meta charset="utf-8">
     <title>Trains</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/playable-area.css">
     <link rel="stylesheet" href="css/styles.css">
     <meta name="viewport" content="width=device-width">
   </head>
   <body>
-    <div id='header'>
-      <div id="timer">TIME: <span id="timer-value"></span></div>
-      <div id="score">CORRECT: <span id="score-value">0 of 0</span></div>
+    <div id="start-screen">
+      <div id="start-slide-text">
+        <h1>WELCOME TO AMAZING GAME!</h1>
+        <p>You want to direct the oncoming boats to their matching colored port.</p>
+        <p>To direct the boats, <b>click on the circled area</b> of the river to change the
+          direction.</p>
+        <p>
+          <br></b>
+          <b>CHOOSE DIFFICULTY TO START:</b>
+        </p>
+        <div class="btn-group" role="group">
+         <button type="button" class="btn btn-primary" id="easy-btn">BEGINNER</button>
+         <button type="button" class="btn btn-primary" id="normal-btn">NORMAL</button>
+         <button type="button" class="btn btn-primary" id="hard-btn">EXTREME</button>
+        </div>
+      </div>
     </div>
-    <div id="playable-area">
 
-      <div class="tile pos00"></div>
-      <div class="tile pos01"></div>
-      <div class="tile pos02"></div>
-      <div class="tile pos03"></div>
-      <div class="tile pos04"></div>
-      <div class="tile pos05"></div>
-      <div class="tile pos06"></div>
-      <div class="tile pos07"></div>
 
-      <div class="tile pos10"></div>
-      <div class="tile pos11"></div>
-      <div class="tile pos12"></div>
-      <div class="tile pos13"></div>
-      <div class="tile pos14"></div>
-      <div class="tile pos15"></div>
-      <div class="tile pos16"></div>
-      <div class="tile pos17"></div>
+    <div id="game">
+      <div id='header'>
+        <div id="timer">TIME: <span id="timer-value"></span></div>
+        <div id="score">CORRECT: <span id="score-value">0 of 0</span></div>
+      </div>
+      <div id="playable-area">
+        <div id="water"></div>
+        <div id="map"></div>
+      </div>
+    </div>
 
-      <div class="tile pos20"></div>
-      <div class="tile pos21"></div>
-      <div class="tile pos22"></div>
-      <div class="tile pos23"></div>
-      <div class="tile pos24"></div>
-      <div class="tile pos25"></div>
-      <div class="tile pos26"></div>
-      <div class="tile pos27"></div>
-
-      <div class="tile pos30"></div>
-      <div class="tile pos31"></div>
-      <div class="tile pos32"></div>
-      <div class="tile pos33"></div>
-      <div class="tile pos34"></div>
-      <div class="tile pos35"></div>
-      <div class="tile pos36"></div>
-      <div class="tile pos37"></div>
-
-      <div class="tile pos40"></div>
-      <div class="tile pos41"></div>
-      <div class="tile pos42"></div>
-      <div class="tile pos43"></div>
-      <div class="tile pos44"></div>
-      <div class="tile pos45"></div>
-      <div class="tile pos46"></div>
-      <div class="tile pos47"></div>
-
-      <div class="tile pos50"></div>
-      <div class="tile pos51"></div>
-      <div class="tile pos52"></div>
-      <div class="tile pos53"></div>
-      <div class="tile pos54"></div>
-      <div class="tile pos55"></div>
-      <div class="tile pos56"></div>
-      <div class="tile pos57"></div>
-
-      <div class="tile pos60"></div>
-      <div class="tile pos61"></div>
-      <div class="tile pos62"></div>
-      <div class="tile pos63"></div>
-      <div class="tile pos64"></div>
-      <div class="tile pos65"></div>
-      <div class="tile pos66"></div>
-      <div class="tile pos67"></div>
-
-      <div class="tile pos70"></div>
-      <div class="tile pos71"></div>
-      <div class="tile pos72"></div>
-      <div class="tile pos73"></div>
-      <div class="tile pos74"></div>
-      <div class="tile pos75"></div>
-      <div class="tile pos76"></div>
-      <div class="tile pos77"></div>
 
 
     </div>
-
     <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
+    <script src="js/global.js"></script>
     <script src="js/game.js"></script>
     <script src="js/main.js"></script>
   </body>
