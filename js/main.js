@@ -2,7 +2,11 @@
 startMenu();
 
 function startMenu(){
-  $('#game').fadeOut(0);
+  $('#game').hide();
+  $('#end-screen').hide();
+  $('#start-screen').hide();
+  $('#start-screen').fadeIn(1000);
+
 
   // $('#start-slide-text h1, #start-slide-text p, .btn-group').hide();
   // $('#start-slide-text h1').fadeIn(1000);
@@ -14,7 +18,8 @@ function startMenu(){
   //   });
   // });
 
- $('#start-slide-text button').click(function(e){
+  //Difficulty buttons
+  $('#start-slide-text button').click(function(e){
    var id = $(e.currentTarget).attr('id');
    if( id === 'easy-btn'){
      currentLevel = level1;
@@ -24,6 +29,15 @@ function startMenu(){
      currentLevel = level1;
    }
 
+   //Restart button
+   $('#end-screen button').click(function(){
+     $('#end-screen').fadeOut(800);
+     $('#game').slideUp(1000);
+     setTimeout(function(){location.reload();},1000);
+
+   });
+
+   //Start Game
    $('#start-screen').slideUp(1000);
    $('#game').fadeIn(2000);
    init();
@@ -34,8 +48,8 @@ function startMenu(){
 //Test
 
 
-railSwitches[0] = new RailSwitch(3,1,'==','⎾');
-railSwitches[1] = new RailSwitch(6,4,'||','⎾');
+railSwitches[0] = new RailSwitch(3,1,'==','⎾', 'bottom-left');
+railSwitches[1] = new RailSwitch(6,4,'⎾','||', 'up-right');
 
 
 //End Test
@@ -43,11 +57,12 @@ railSwitches[1] = new RailSwitch(6,4,'||','⎾');
 
 //Starting function
 function init(){
+
   createGrid(level1);
 
 
   render(level1);//Initial rendering of level
-  setInterval(update,750); //Update train movement every second
+  setInterval(update, speedUpdate); //Update train movement every second
   setInterval(timerUpdate,1000); //Update timer
 
   //Add click events to all railRoad Switches:
@@ -81,10 +96,12 @@ function update(){
 
   //Move all trains:
   trains.forEach(function(train){
-        moveTrain(train);
+        moveBoat(train);
   });
 
   createTrains(2);//Create New trains
+
+
 }
 
 function timerUpdate(){
@@ -93,9 +110,12 @@ function timerUpdate(){
     $(timer.html).html(convertSeconds2Minutes(timer.time));//Update time on DOM
   }
 }
+
 function scoreUpdate(){
   $(score.html).html(score.correct + " of " + score.total);//Update Score on DOM
-
+  if( timer.time === 0 &&  trains.length === 0 ){
+    checkForWin();
+  }
 }
 
 
@@ -113,6 +133,52 @@ function createTrains(colorsAmount){
   trains.push( newTrain );
 
 }
+//***************************************************************   -> GAME Ending
+
+var win = false;
+function checkForWin(){
+  if(!win){
+    win = true;
+    console.log('checkForWin');
+    $('#end-screen').fadeIn(1000);//Show win popup
+
+    score.perc = Math.floor(score.correct/score.total * 100) ;
+    var winText = 'Your Score is: ' + score.correct + ' of ' + score.total + '<br> ( ' + score.perc + '% )';
+    $('#end-screen h2').html(winText);
+
+    if (score.perc === 100){
+      setTimeout(function(){$('#end-screen p').html('PERFECT! You play like a GOD!');},3000);
+      addStars(3);
+    }else if(score.perc >= 90){
+      setTimeout(function(){$('#end-screen p').html('You are MASTER!');},3000);
+      addStars(3);
+    }else if(score.perc >= 65){
+      setTimeout(function(){$('#end-screen p').html('Good Job!');},3000);
+      addStars(2);
+
+    }else if(score.perc >= 50){
+      setTimeout(function(){$('#end-screen p').html('Not bad, but you should try harder!');},3000);
+      addStars(1);
+
+    }else{
+      $('#end-screen p').html('Are you still playing?');
+    }
+  }
+
+}
+
+function addStars(count){
+ if(count > 0){
+   setTimeout(function(){$('#end-screen .glyphicon:nth-child('+ 2 +')').addClass('star-active');},1000);
+ }
+ if(count > 1){
+   setTimeout(function(){$('#end-screen .glyphicon:nth-child('+ 3 +')').addClass('star-active');},2000);
+ }
+ if(count > 2){
+   setTimeout(function(){$('#end-screen .glyphicon:nth-child('+ 4 +')').addClass('star-active');},3000);
+ }
+}
+
 
 //************************************************************ ->  RENDER GRID
 

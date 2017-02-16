@@ -20,40 +20,45 @@ class Train
 
 class RailSwitch
 {
-  constructor(x, y, state1, state2){
+  constructor(x, y, state1, state2 , logAnchor){
     this.x = x;
     this.y = y;
     this.state1 = state1;
     this.state2 = state2;
     this.currentState = state1;
-
+    this.logAnchor = logAnchor;
 
     //Add to DOM
-    var railSwitchHtml = '<div class="switch"></div>';
-    this.body = $(railSwitchHtml).appendTo($('#playable-area'));
+    var railSwitchHtml = '<div class="switch"> </div>';
+
+    this.body = $(railSwitchHtml).appendTo($('#playable-area'));//Insert switch to the game
+    this.log =  $('<div class="log"></div>').appendTo(this.body);//Insert log to the game
+    this.circle =$('<div class="circle"></div>').appendTo(this.body);
+
     updatePositionCSS(this);
+    offsetLog(this);
   }
 
 
   toggleState (){
+
     if(this.currentState === this.state1){
       this.currentState = this.state2;
 
-      console.log($('.pos'+ this.y + this.x));
-      console.log(tile2class(this.currentState));
-
     }else{
       this.currentState = this.state1;
-
     }
-    
-    $(('.pos'+ this.y + this.x)).attr('class', 'tile pos'+ this.y + this.x);//   TEMP
-    $(('.pos'+ this.y + this.x)).addClass( tile2class(this.currentState) ); //TEMP
+    rotateLog(this);
+    offsetLog(this);
+
+    // $(('.pos'+ this.y + this.x)).attr('class', 'tile pos'+ this.y + this.x);//   TEMP
+    // $(('.pos'+ this.y + this.x)).addClass( tile2class(this.currentState) ); //TEMP
   }
 
 }//End of class
 
-class House {
+class House
+{
   constructor(color, x ,y) {
     this.x = x;
     this.y = y;
@@ -61,104 +66,172 @@ class House {
 
   }
 }//End of class
-function rotate(object, deg){
-  object.rotation += deg;
-  $(object.body).css('transform','rotate('+ object.rotation +'deg)');
-}
 
-function moveTrain (train){
+
+
+
+
+
+/////////////////////////////////////////////////////////      BOAT MOVEMENT
+function moveBoat (boat){
   var currentLevel = level1;
   //Check tile for railroad
-  switch (currentLevel[train.y][train.x]) {
+  switch (currentLevel[boat.y][boat.x]) {
     case "||":
-      train.y += train.direction.y;
+      boat.y += boat.direction.y;
     break;
     case "==":
-      train.x += train.direction.x;
+      boat.x += boat.direction.x;
     break;
     case "⎿":
-      if(train.direction.x < 0 ){
-        train.direction.y = -1;//go up
-        train.direction.x = 0;
-        train.y += train.direction.y;
-        rotate(train, 90);
+      if(boat.direction.x < 0 ){
+        boat.direction.y = -1;//go up
+        boat.direction.x = 0;
+        boat.y += boat.direction.y;
+        rotate(boat, 90);
       }else{
-        train.direction.y = 0;
-        train.direction.x = 1;//go right
-        train.x += train.direction.x;
-        rotate(train, -90);
+        boat.direction.y = 0;
+        boat.direction.x = 1;//go right
+        boat.x += boat.direction.x;
+        rotate(boat, -90);
       }
     break;
     case "⏌":
-      if(train.direction.x > 0 ){
-        train.direction.y = -1; //go up
-        train.direction.x = 0;
-        train.y += train.direction.y;
-        rotate(train, -90);
+      if(boat.direction.x > 0 ){
+        boat.direction.y = -1; //go up
+        boat.direction.x = 0;
+        boat.y += boat.direction.y;
+        rotate(boat, -90);
       }else{
-        train.direction.y = 0;
-        train.direction.x = -1;//go left
-        train.x += train.direction.x;
-        rotate(train, 90);
+        boat.direction.y = 0;
+        boat.direction.x = -1;//go left
+        boat.x += boat.direction.x;
+        rotate(boat, 90);
       }
     break;
     case '⎾':
-    if(train.direction.x < 0 ){
-      train.direction.y = 1; //go down
-      train.direction.x = 0;
-      train.y += train.direction.y;
-      rotate(train, -90);
+    if(boat.direction.x < 0 ){
+      boat.direction.y = 1; //go down
+      boat.direction.x = 0;
+      boat.y += boat.direction.y;
+      rotate(boat, -90);
     }else{
-      train.direction.y = 0;
-      train.direction.x = 1;//go right
-      train.x += train.direction.x;
-      rotate(train, 90);
+      boat.direction.y = 0;
+      boat.direction.x = 1;//go right
+      boat.x += boat.direction.x;
+      rotate(boat, 90);
     }
     break;
     case '⏋':
-    if(train.direction.x > 0 ){
-      train.direction.y = 1; //go down
-      train.direction.x = 0;
-      train.y += train.direction.y;
-      rotate(train, 90);
+    if(boat.direction.x > 0 ){
+      boat.direction.y = 1; //go down
+      boat.direction.x = 0;
+      boat.y += boat.direction.y;
+      rotate(boat, 90);
     }else{
-      train.direction.y = 0;
-      train.direction.x = -1;//go left
-      train.x += train.direction.x;
-      rotate(train, -90);
+      boat.direction.y = 0;
+      boat.direction.x = -1;//go left
+      boat.x += boat.direction.x;
+      rotate(boat, -90);
     }
     break;
     case 's>':
-      train.direction.x = 1;//go right
-      train.x += train.direction.x;
-      rotate(train, 90);
+      boat.direction.x = 1;//go right
+      boat.x += boat.direction.x;
+      rotate(boat, 90);
     break;
     case '<s':
-      train.direction.x = -1;//go right
-      train.x += train.direction.x;
+      boat.direction.x = -1;//go right
+      boat.x += boat.direction.x;
     break;
   }
 
-  //Check if train reached house
-  if(currentLevel[train.y][train.x].includes('h')){
-    var houseNumber = parseInt(currentLevel[train.y][train.x][1]);
-    train.finished = true;
+  //Check if boat reached house
+  if(currentLevel[boat.y][boat.x].includes('h')){
+    var houseNumber = parseInt(currentLevel[boat.y][boat.x][1]);
+    boat.finished = true;
 
     setTimeout(function(){
       score.total += 1;
-      if(train.color === houseNumber){//Correct house
+      if(boat.color === houseNumber){//Correct house
         score.correct += 1;
       }
       scoreUpdate();
-      $(train.body).remove();
+      $(boat.body).remove();
     },1000);
 
   }
+  createWaterTrail(boat);
 
-  //Move image on DOM
-  updatePositionCSS(train);
+
+  updatePositionCSS(boat);//Move image on DOM
+}
+/////////////////////////////////////////////////////////////////////////     END OF BOAT MOVEMENT
+
+
+
+
+///////////////////////////////////////////////////////LOG ANIMATION
+function rotateLog(object){
+  if(object.logAnchor === 'up-left' || object.logAnchor === 'bottom-right' ){
+    if(object.currentState === object.state1){
+      $(object.log).css('transform', 'rotate(0deg)');
+    }else{
+      $(object.log).css('transform', 'rotate(90deg)');
+    }
+  }
+  if(object.logAnchor === 'up-right' || object.logAnchor === 'bottom-left' ){
+    if(object.currentState === object.state1){
+      $(object.log).css('transform', 'rotate(0deg)');
+    }else{
+      $(object.log).css('transform', 'rotate(-90deg)');
+    }
+  }
 }
 
+function offsetLog(object){
+  if(object.logAnchor === 'up-right'){
+    if(object.currentState === object.state2){
+      $(object.log).css('left', '32px');
+      $(object.log).css('top', '0px');
+    }else{
+      $(object.log).css('left', '0px');
+      $(object.log).css('top', '-32px');
+    }
+  }
+
+  if(object.logAnchor === 'up-left'){
+    if(object.currentState === object.state2){
+      $(object.log).css('left', '-32px');
+      $(object.log).css('top', '0px');
+    }else{
+      $(object.log).css('left', '0px');
+      $(object.log).css('top', '-32px');
+    }
+  }
+
+  if(object.logAnchor === 'bottom-right'){
+    if(object.currentState === object.state2){
+      $(object.log).css('left', '32px');
+      $(object.log).css('top', '0px');
+    }else{
+      $(object.log).css('left', '0px');
+      $(object.log).css('top', '32px');
+    }
+  }
+
+  if(object.logAnchor === 'bottom-left'){
+    if(object.currentState === object.state2){
+      $(object.log).css('left', '-32px');
+      $(object.log).css('top', '0px');
+    }else{
+      $(object.log).css('left', '0px');
+      $(object.log).css('top', '32px');
+    }
+  }
+}
+
+/////////////////////////////////////////////////// HELPING FUNCTIONS
 //Convert tile value to Class Name:
 function tile2class(string){
 
@@ -201,4 +274,29 @@ function convertSeconds2Minutes(sec){
     }
   var m = parseInt(sec/60);
   return m + ':' +s;
+}
+
+function rotate(object, deg){
+  object.rotation += deg;
+  $(object.body).css('transform','rotate('+ object.rotation +'deg)');
+}
+
+
+function createWaterTrail(object){
+  var waterTail = '<span class="waterTail"></span>';
+  waterTail = $(waterTail).appendTo(playableArea);
+  $(waterTail).css('top', parseInt($(object.body).css('top'))+ 27);
+  $(waterTail).css('left', parseInt($(object.body).css('left'))+ 27 );
+  setTimeout(function(){ $(waterTail).remove() ;},2000);
+
+  setTimeout(function(){
+    var waterTail = '<span class="waterTail"></span>';
+    waterTail = $(waterTail).appendTo(playableArea);
+    $(waterTail).css('top', parseInt($(object.body).css('top'))+ 27);
+    $(waterTail).css('left', parseInt($(object.body).css('left'))+ 27 );
+    setTimeout(function(){ $(waterTail).remove() ;},2000);
+  },speedUpdate/2);
+
+
+
 }

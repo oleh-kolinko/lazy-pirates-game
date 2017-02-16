@@ -47,32 +47,71 @@
   transform: scale(1);
   width: 64px;
   height: 64px;
-  transition: top .85s linear,left .85s linear,transform .5s;
+  transition: top .75s linear,left .75s linear,transform .5s;
   z-index: 1;
 }
+
+.waterTail{
+  width: 10px;
+  height: 10px;
+  border: 1px solid #82b1ff;
+  border-radius: 10px;
+  position: absolute;
+  animation: animateWaterTail 2.5s linear;
+  z-index: -1;
+}
+@keyframes animateWaterTail{
+  0%{ transform: scale(1); opacity: 1;}
+  80%{opacity: 0.1;}
+  100% { transform: scale(3.5); opacity: 0;}
+}
+
 .house{
   border: 2px solid red;
-  z-index: 2;
+  z-index: 4;
 }
 .switch{
   position: absolute;
   width: 64px;
   height: 64px;
-  border-radius: 32px;
-  opacity: 0.1;
-  background-color: green;
   z-index: 3;
-  /*cursor: pointer;*/
+
 }
 .start{
   border: 2px solid green;
 }
-.switch:hover{
-  opacity: 0.2;
+.circle{
+  z-index: 4;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  top:-64px;
+  transform: scale(2);
+  border: 5px solid #d62d20;
+  /*background-color: #eee;*/
+  opacity: .05;
+  transition: .5s;
+  
 }
-.horizontal,.vertical,.top-right,.top-left,.bottom-right,.bottom-left{
-  z-index: 2;
+.circle:hover{
+  opacity: .4;
 }
+
+
+
+.log{
+  position: relative;
+  width: 64px;
+  height: 64px;
+  z-index: 3;
+  opacity: 1;
+  background-image: url('../img/log.png');
+  transition: .5s;
+}
+
+
+
 
 .horizontal{
   border-top: 1px solid #000;

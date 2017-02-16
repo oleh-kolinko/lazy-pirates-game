@@ -13,7 +13,7 @@ var level1 = [
   [ null , 'h1' , '==' , '==' , '==' , '==' , '⏋' , null , null , null ,null , null , null],//1
   [ null , null , null , '||' , null , null , '||' , null , null , null ,null , null , null],//2
   [ null , null , null , '||' , null , null , '||' , null , null , null ,null , null , null],//3
-  [ null , null , null , 'h2' , null , null , '||' , '==' , '==' , '==' ,'⏋' , null , null],//4
+  [ null , null , null , 'h2' , null , null , '⎾' , '==' , '==' , '==' ,'⏋' , null , null],//4
   [ null , null , null , null , null , null , '||' , null , null , null ,'||' , null , null],//5
   [ null , null , null , null , null , null , '||' , null , null , null ,'||' , null , null],//6
   [ 's>' , '==' , '==' , '==' , '==' , '==' , "⏌" , null , null , null ,'||' , null , null],//7
@@ -58,9 +58,10 @@ var railSwitches = []; //All switches
 var houses = []; //All houses
 var start = {}; //Starting point
 var currentLevel = level1;
+var speedUpdate = 750; // Interval of update calling, speed of boats movement(less -> faster)
 
 var timer = {
-  time : 61,
+  time : 41,
   html : $('#timer-value')
 };
 var score = {
