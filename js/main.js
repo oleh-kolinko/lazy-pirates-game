@@ -31,7 +31,7 @@ function startMenu(){
 
    //Restart button
    $('#end-screen button').click(function(){
-     $('#end-screen').fadeOut(800);
+     $('body').fadeOut(800);
      $('#game').slideUp(1000);
      setTimeout(function(){location.reload();},1000);
 
@@ -161,7 +161,7 @@ function checkForWin(){
       addStars(1);
 
     }else{
-      $('#end-screen p').html('Are you still playing?');
+      $('#end-screen p').html('My grandma can do better than you');
     }
   }
 

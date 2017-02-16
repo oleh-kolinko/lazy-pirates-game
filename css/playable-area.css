@@ -1,12 +1,17 @@
 #header{
-  box-sizing:inherit;
   width: 832px;
+  height: 100px;
   margin: 0 auto;
   padding: 10px;
-  background-color: pink;
+  background-color: lightblue;
+  font-size: 3.5em;
 }
 #score{
+  float:right;
 
+}
+#timer{
+  float:left;
 }
 #playable-area{
   position: relative;
@@ -92,7 +97,7 @@
   /*background-color: #eee;*/
   opacity: .05;
   transition: .5s;
-  
+
 }
 .circle:hover{
   opacity: .4;

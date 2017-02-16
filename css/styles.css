@@ -6,6 +6,7 @@ html {
 button{
   outline: none;
 }
+
 body{
   font-family: 'Open Sans', sans-serif;
   color: #333;
@@ -26,6 +27,10 @@ body{
 
 }
 #start-screen p {
+  font-size: 1.2em;
+}
+#start-screen img {
+  border-radius: 5px;
   font-size: 1.2em;
 }
 
