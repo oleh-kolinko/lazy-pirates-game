@@ -5,7 +5,7 @@ function startMenu(){
   $('#game').hide();
   $('#end-screen').hide();
   $('#start-screen').hide();
-  $('#start-screen').fadeIn(1000);
+  $('#start-screen').fadeIn(3000);
 
 
   // $('#start-slide-text h1, #start-slide-text p, .btn-group').hide();

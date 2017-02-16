@@ -10,8 +10,12 @@ button{
 body{
   font-family: 'Open Sans', sans-serif;
   color: #333;
-  /*background-image: url('../img/bg.jpg');*/
+  background-image: url('../img/bg.jpg');
   background-size: cover;
+}
+#playable-area{
+  border-radius: 5px;
+  outline: 3px solid #333;
 }
 #start-screen{
   padding-top: 100px;
