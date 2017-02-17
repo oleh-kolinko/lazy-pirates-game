@@ -1,1 +1,1 @@
-LIVE :https://oleh-kolinko.github.io/trains-game/
+LIVE :https://oleh-kolinko.github.io/lazy-pirates-game/
