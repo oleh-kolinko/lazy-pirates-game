@@ -23,8 +23,8 @@
   position: absolute;
   width: 832px;
   height: 640px;
-  background-image: url('../img/level1.png');
-  z-index: 1;
+  /*background-image: url('../img/level1.png');*/
+  z-index: 3;
 }
 #water{
   position: absolute;
@@ -72,15 +72,18 @@
 }
 
 .house{
-  border: 2px solid red;
-  z-index: 4;
+  /*border: 2px solid red;*/
+  overflow: visible;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 5;
 }
 .switch{
   position: absolute;
   width: 64px;
   height: 64px;
   z-index: 3;
-
 }
 .start{
   border: 2px solid green;
@@ -97,7 +100,7 @@
   /*background-color: #eee;*/
   opacity: .05;
   transition: .5s;
-
+  cursor: pointer;
 }
 .circle:hover{
   opacity: .4;

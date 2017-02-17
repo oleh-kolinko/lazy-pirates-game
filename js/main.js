@@ -19,15 +19,36 @@ function startMenu(){
   // });
 
   //Difficulty buttons
+  var gameStarted = false;
   $('#start-slide-text button').click(function(e){
    var id = $(e.currentTarget).attr('id');
    if( id === 'easy-btn'){
      currentLevel = level1;
+     $('#map').css('background-image','url("img/level1.png")');
+     currentLevelColors = 2;
+     difficulty = 0;
+
    }else if( id === 'normal-btn'){
-     currentLevel = level1;
+     currentLevel = level2;
+     $('#map').css('background-image','url("img/level2.png")');
+     currentLevelColors = 1;
+     difficulty = 1;
    }else{
-     currentLevel = level1;
+     currentLevel = level2;
+     $('#map').css('background-image','url("img/level2.png")');
+      currentLevelColors = 2;
+      difficulty = 2;
    }
+
+   if(!gameStarted){
+     gameStarted = true;
+     //Start Game
+     $('#start-screen').slideUp(1000);
+     $('#game').fadeIn(2000);
+     init();
+   }
+ });
+
 
    //Restart button
    $('#end-screen button').click(function(){
@@ -37,19 +58,28 @@ function startMenu(){
 
    });
 
-   //Start Game
-   $('#start-screen').slideUp(1000);
-   $('#game').fadeIn(2000);
-   init();
- });
 
 }
 
 //Test
 
+function createSwitches(){
+  if(currentLevel === level1 ){
+    railSwitches[0] = new RailSwitch(3,1,'==','⎾', 'bottom-left');
+    railSwitches[1] = new RailSwitch(6,4,'⎾','||', 'up-right');
+  }else if(currentLevel === level2 ){
+    railSwitches[0] = new RailSwitch(5,4,'==','⏋', 'bottom-right');
+    railSwitches[1] = new RailSwitch(5,8,'⏌','||', 'bottom-left');
+    railSwitches[2] = new RailSwitch(10,4,'==','⏋', 'bottom-right');
 
-railSwitches[0] = new RailSwitch(3,1,'==','⎾', 'bottom-left');
-railSwitches[1] = new RailSwitch(6,4,'⎾','||', 'up-right');
+  }else if (currentLevel === level3){
+    railSwitches[0] = new RailSwitch(5,4,'==','⏋', 'bottom-right');
+    railSwitches[1] = new RailSwitch(5,8,'⏌','||', 'bottom-left');
+    railSwitches[2] = new RailSwitch(10,4,'==','⏋', 'bottom-right');
+
+  }
+}
+
 
 
 //End Test
@@ -58,10 +88,10 @@ railSwitches[1] = new RailSwitch(6,4,'⎾','||', 'up-right');
 //Starting function
 function init(){
 
-  createGrid(level1);
+  createGrid(currentLevel);
+  createSwitches();
 
-
-  render(level1);//Initial rendering of level
+  render(currentLevel);//Initial rendering of level
   setInterval(update, speedUpdate); //Update train movement every second
   setInterval(timerUpdate,1000); //Update timer
 
@@ -69,8 +99,8 @@ function init(){
   railSwitches.forEach(function (railSwitch){
     $(railSwitch.body).on('click',function(){
       railSwitch.toggleState();
-      level1[railSwitch.y][railSwitch.x] = railSwitch.currentState;
-      render(level1);
+      currentLevel[railSwitch.y][railSwitch.x] = railSwitch.currentState;
+      render(currentLevel);
     });
   });
 
@@ -78,9 +108,10 @@ function init(){
 }
 
 function initPortColors(){
-  var colors = ['#d62d20','#008744','#FFA700'];
+  var colors = ['#d62d20','#008744','#FFA700','#0057e7'];
   houses.forEach(function(house,i){
-    $(house.body).css('background-color',colors[i]);
+    $(house.body).css('background-image','url("img/port'+ i +'.png")');
+    $(house.body).addClass('house');
   });
 }
 
@@ -99,7 +130,7 @@ function update(){
         moveBoat(train);
   });
 
-  createTrains(2);//Create New trains
+  createTrains(currentLevelColors);//Create New trains
 
 
 }
@@ -120,15 +151,18 @@ function scoreUpdate(){
 
 
 
-var funcCalledcounter = 3;//temp
+var funcCalledcounter = 4;//temp counter for spawning boats
+
 function createTrains(colorsAmount){
   funcCalledcounter ++ ;
-  if(funcCalledcounter % 4 !==0   ||   timer.time === 0){
+  if(funcCalledcounter % (7 - difficulty*2) !==0   ||   timer.time === 0){
     return;
   }
 
   var color = Math.floor(Math.random() * (colorsAmount + 1));
   var newTrain = new Train (start.x, start.y, color);
+
+  rotate(newTrain, 90);//TEMPRORY (s> right start only, have to move this into moveBoat
   $(newTrain.body).css('background-image', 'url("img/boat'+ color +'.png")');
   trains.push( newTrain );
 

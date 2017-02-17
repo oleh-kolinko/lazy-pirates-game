@@ -74,7 +74,6 @@ class House
 
 /////////////////////////////////////////////////////////      BOAT MOVEMENT
 function moveBoat (boat){
-  var currentLevel = level1;
   //Check tile for railroad
   switch (currentLevel[boat.y][boat.x]) {
     case "||":
@@ -138,7 +137,7 @@ function moveBoat (boat){
     case 's>':
       boat.direction.x = 1;//go right
       boat.x += boat.direction.x;
-      rotate(boat, 90);
+      // rotate(boat, 90);
     break;
     case '<s':
       boat.direction.x = -1;//go right
@@ -147,6 +146,7 @@ function moveBoat (boat){
   }
 
   //Check if boat reached house
+
   if(currentLevel[boat.y][boat.x].includes('h')){
     var houseNumber = parseInt(currentLevel[boat.y][boat.x][1]);
     boat.finished = true;
@@ -158,7 +158,7 @@ function moveBoat (boat){
       }
       scoreUpdate();
       $(boat.body).remove();
-    },1000);
+    },speedUpdate);
 
   }
   createWaterTrail(boat);
