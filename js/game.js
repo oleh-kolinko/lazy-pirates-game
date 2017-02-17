@@ -41,7 +41,7 @@ class RailSwitch
 
 
   toggleState (){
-
+    ion.sound.play("tap");
     if(this.currentState === this.state1){
       this.currentState = this.state2;
 
@@ -155,6 +155,7 @@ function moveBoat (boat){
       score.total += 1;
       if(boat.color === houseNumber){//Correct house
         score.correct += 1;
+        ion.sound.play('bell');
       }
       scoreUpdate();
       $(boat.body).remove();

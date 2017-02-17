@@ -1,7 +1,24 @@
 
 startMenu();
 
+function loadSounds () {
+  ion.sound({
+    sounds: [{name: "pirate", volume: 0.5},
+    {name: "riverFull"},
+    {name: "seasong"},
+    {name: "tap"},
+    {name: "bell", volume: 1.4}  ],
+
+    path: "ionsound/sounds/",
+    preload: true,
+    volume: 1.0
+  });
+}
+
+
 function startMenu(){
+  loadSounds();
+  ion.sound.play("pirate");
   $('#game').hide();
   $('#end-screen').hide();
   $('#start-screen').hide();
@@ -18,27 +35,34 @@ function startMenu(){
   //   });
   // });
 
+
+  //Level choose
+
   //Difficulty buttons
   var gameStarted = false;
   $('#start-slide-text button').click(function(e){
+    ion.sound.play("tap");
    var id = $(e.currentTarget).attr('id');
    if( id === 'easy-btn'){
      currentLevel = level1;
      $('#map').css('background-image','url("img/level1.png")');
      currentLevelColors = 2;
-     difficulty = 0;
+
 
    }else if( id === 'normal-btn'){
      currentLevel = level2;
      $('#map').css('background-image','url("img/level2.png")');
-     currentLevelColors = 1;
-     difficulty = 1;
+     currentLevelColors = 3;
+
    }else{
      currentLevel = level2;
      $('#map').css('background-image','url("img/level2.png")');
-      currentLevelColors = 2;
-      difficulty = 2;
+      currentLevelColors = 3;
+
    }
+
+   var radioVal = $('#start-screen input:radio:checked').val();
+   difficulty = radioVal;
 
    if(!gameStarted){
      gameStarted = true;
@@ -46,12 +70,17 @@ function startMenu(){
      $('#start-screen').slideUp(1000);
      $('#game').fadeIn(2000);
      init();
+     ion.sound.stop('pirate');
+
+     setTimeout(function(){ion.sound.play('seasong');},10000);
+     ion.sound.play("riverFull");
    }
  });
 
 
    //Restart button
    $('#end-screen button').click(function(){
+     ion.sound.play("tap");
      $('body').fadeOut(800);
      $('#game').slideUp(1000);
      setTimeout(function(){location.reload();},1000);
@@ -61,7 +90,6 @@ function startMenu(){
 
 }
 
-//Test
 
 function createSwitches(){
   if(currentLevel === level1 ){
@@ -81,10 +109,6 @@ function createSwitches(){
 }
 
 
-
-//End Test
-
-
 //Starting function
 function init(){
 
@@ -98,6 +122,7 @@ function init(){
   //Add click events to all railRoad Switches:
   railSwitches.forEach(function (railSwitch){
     $(railSwitch.body).on('click',function(){
+
       railSwitch.toggleState();
       currentLevel[railSwitch.y][railSwitch.x] = railSwitch.currentState;
       render(currentLevel);
@@ -151,11 +176,11 @@ function scoreUpdate(){
 
 
 
-var funcCalledcounter = 4;//temp counter for spawning boats
+var funcCalledcounter = 2;//temp counter for spawning boats
 
 function createTrains(colorsAmount){
   funcCalledcounter ++ ;
-  if(funcCalledcounter % (7 - difficulty*2) !==0   ||   timer.time === 0){
+  if(funcCalledcounter % (5 - difficulty) !==0   ||   timer.time === 0){
     return;
   }
 
@@ -184,7 +209,7 @@ function checkForWin(){
       setTimeout(function(){$('#end-screen p').html('PERFECT! You play like a GOD!');},3000);
       addStars(3);
     }else if(score.perc >= 90){
-      setTimeout(function(){$('#end-screen p').html('You are MASTER!');},3000);
+      setTimeout(function(){$('#end-screen p').html('You are TRUE CAPTAIN!');},3000);
       addStars(3);
     }else if(score.perc >= 65){
       setTimeout(function(){$('#end-screen p').html('Good Job!');},3000);
