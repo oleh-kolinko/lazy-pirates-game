@@ -74,6 +74,7 @@ function startMenu(){
 
      setTimeout(function(){ion.sound.play('seasong');},10000);
      ion.sound.play("riverFull");
+     ion.sound.stop('pirate');
    }
  });
 
