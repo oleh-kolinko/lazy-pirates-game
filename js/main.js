@@ -94,17 +94,17 @@ function startMenu(){
 
 function createSwitches(){
   if(currentLevel === level1 ){
-    railSwitches[0] = new RailSwitch(3,1,'==','⎾', 'bottom-left');
-    railSwitches[1] = new RailSwitch(6,4,'⎾','||', 'up-right');
+    logs[0] = new Log(3,1,'==','⎾', 'bottom-left');
+    logs[1] = new Log(6,4,'⎾','||', 'up-right');
   }else if(currentLevel === level2 ){
-    railSwitches[0] = new RailSwitch(5,4,'==','⏋', 'bottom-right');
-    railSwitches[1] = new RailSwitch(5,8,'⏌','||', 'bottom-left');
-    railSwitches[2] = new RailSwitch(10,4,'==','⏋', 'bottom-right');
+    logs[0] = new Log(5,4,'==','⏋', 'bottom-right');
+    logs[1] = new Log(5,8,'⏌','||', 'bottom-left');
+    logs[2] = new Log(10,4,'==','⏋', 'bottom-right');
 
   }else if (currentLevel === level3){
-    railSwitches[0] = new RailSwitch(5,4,'==','⏋', 'bottom-right');
-    railSwitches[1] = new RailSwitch(5,8,'⏌','||', 'bottom-left');
-    railSwitches[2] = new RailSwitch(10,4,'==','⏋', 'bottom-right');
+    logs[0] = new Log(5,4,'==','⏋', 'bottom-right');
+    logs[1] = new Log(5,8,'⏌','||', 'bottom-left');
+    logs[2] = new Log(10,4,'==','⏋', 'bottom-right');
 
   }
 }
@@ -117,11 +117,11 @@ function init(){
   createSwitches();
 
   render(currentLevel);//Initial rendering of level
-  setInterval(update, speedUpdate); //Update train movement every second
+  setInterval(update, speedUpdate); //Update boat movement every second
   setInterval(timerUpdate,1000); //Update timer
 
   //Add click events to all railRoad Switches:
-  railSwitches.forEach(function (railSwitch){
+  logs.forEach(function (railSwitch){
     $(railSwitch.body).on('click',function(){
 
       railSwitch.toggleState();
@@ -145,18 +145,18 @@ function initPortColors(){
 //************************************************************ ->  UPDATE
 function update(){
 
-  //Delete trains:
-  trains = trains.filter(function(train){
-    return !(train.finished);
+  //Delete boats:
+  boats = boats.filter(function(boat){
+    return !(boat.finished);
   });
 
 
-  //Move all trains:
-  trains.forEach(function(train){
-        moveBoat(train);
+  //Move all boats:
+  boats.forEach(function(boat){
+        moveBoat(boat);
   });
 
-  createTrains(currentLevelColors);//Create New trains
+  createBoats(currentLevelColors);//Create New Boats
 
 
 }
@@ -170,7 +170,7 @@ function timerUpdate(){
 
 function scoreUpdate(){
   $(score.html).html(score.correct + " of " + score.total);//Update Score on DOM
-  if( timer.time === 0 &&  trains.length === 0 ){
+  if( timer.time === 0 &&  boats.length === 0 ){
     checkForWin();
   }
 }
@@ -179,18 +179,18 @@ function scoreUpdate(){
 
 var funcCalledcounter = 2;//temp counter for spawning boats
 
-function createTrains(colorsAmount){
+function createBoats(colorsAmount){
   funcCalledcounter ++ ;
   if(funcCalledcounter % (5 - difficulty) !==0   ||   timer.time === 0){
     return;
   }
 
   var color = Math.floor(Math.random() * (colorsAmount + 1));
-  var newTrain = new Train (start.x, start.y, color);
+  var newBoat = new Boat (start.x, start.y, color);
 
-  rotate(newTrain, 90);//TEMPRORY (s> right start only, have to move this into moveBoat
-  $(newTrain.body).css('background-image', 'url("img/boat'+ color +'.png")');
-  trains.push( newTrain );
+  rotate(newBoat, 90);//TEMPRORY (s> right start only, have to move this into moveBoat
+  $(newBoat.body).css('background-image', 'url("img/boat'+ color +'.png")');
+  boats.push( newBoat );
 
 }
 //***************************************************************   -> GAME Ending

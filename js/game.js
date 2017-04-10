@@ -1,4 +1,4 @@
-class Train
+class Boat
 {
   constructor(x, y, color){
     this.x = x;
@@ -12,13 +12,13 @@ class Train
      this.direction = { x : 0 , y : 0};
 
     //Add to DOM
-    var trainHtml = '<div class="train"></div>';
-    this.body = $(trainHtml).appendTo($('#playable-area'));
+    var boatHtml = '<div class="boat"></div>';
+    this.body = $(boatHtml).appendTo($('#playable-area'));
     updatePositionCSS(this);
   }
 }//End of class
 
-class RailSwitch
+class Log
 {
   constructor(x, y, state1, state2 , logAnchor){
     this.x = x;

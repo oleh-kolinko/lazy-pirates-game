@@ -53,8 +53,8 @@ var level3 = [
 //GLOBAL VARIABLES:
 var playableArea = $('#playable-area');
 var tileSize = 64;
-var trains = []; // All trains
-var railSwitches = []; //All switches
+var boats = []; // All boats
+var logs = []; //All logs
 var houses = []; //All houses
 var start = {}; //Starting point
 var currentLevel ;

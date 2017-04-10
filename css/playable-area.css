@@ -48,7 +48,7 @@
   float: left;
 }
 
-.train{
+.boat{
   position: absolute;
   transform: scale(1);
   width: 64px;
