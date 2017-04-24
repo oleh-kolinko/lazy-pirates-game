@@ -57,6 +57,7 @@ class Log
 
 }//End of class
 
+//HOUSE AKA PORT
 class House
 {
   constructor(color, x ,y) {
@@ -66,10 +67,6 @@ class House
 
   }
 }//End of class
-
-
-
-
 
 
 /////////////////////////////////////////////////////////      BOAT MOVEMENT
@@ -170,8 +167,6 @@ function moveBoat (boat){
 /////////////////////////////////////////////////////////////////////////     END OF BOAT MOVEMENT
 
 
-
-
 ///////////////////////////////////////////////////////LOG ANIMATION
 function rotateLog(object){
   if(object.logAnchor === 'up-left' || object.logAnchor === 'bottom-right' ){
@@ -190,6 +185,7 @@ function rotateLog(object){
   }
 }
 
+//Offset Log based on its rotation
 function offsetLog(object){
   if(object.logAnchor === 'up-right'){
     if(object.currentState === object.state2){
@@ -282,7 +278,7 @@ function rotate(object, deg){
   $(object.body).css('transform','rotate('+ object.rotation +'deg)');
 }
 
-
+//Create rounded bubbles after all boats
 function createWaterTrail(object){
   var waterTail = '<span class="waterTail"></span>';
   waterTail = $(waterTail).appendTo(playableArea);

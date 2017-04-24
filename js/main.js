@@ -1,19 +1,5 @@
-
+//Inital funciton to start the game -> launches a starting menu
 startMenu();
-
-function loadSounds () {
-  ion.sound({
-    sounds: [{name: "pirate", volume: 0.5},
-    {name: "riverFull"},
-    {name: "seasong"},
-    {name: "tap"},
-    {name: "bell", volume: 1.4}  ],
-
-    path: "ionsound/sounds/",
-    preload: true,
-    volume: 1.0
-  });
-}
 
 
 function startMenu(){
@@ -24,21 +10,7 @@ function startMenu(){
   $('#start-screen').hide();
   $('#start-screen').fadeIn(3000);
 
-
-  // $('#start-slide-text h1, #start-slide-text p, .btn-group').hide();
-  // $('#start-slide-text h1').fadeIn(1000);
-  // $('#start-slide-text p:nth-child(2)').fadeIn(2000,function(){
-  //   $('#start-slide-text p:nth-child(3)').fadeIn(2000,function(){
-  //     $('#start-slide-text p:nth-child(4)').fadeIn(2000,function(){
-  //       $('#start-slide-text .btn-group').fadeIn(2000);
-  //   });
-  //   });
-  // });
-
-
-  //Level choose
-
-  //Difficulty buttons
+  //chosing a level
   var gameStarted = false;
   $('#start-slide-text button').click(function(e){
     ion.sound.play("tap");
@@ -47,20 +19,17 @@ function startMenu(){
      currentLevel = level1;
      $('#map').css('background-image','url("img/level1.png")');
      currentLevelColors = 2;
-
-
    }else if( id === 'normal-btn'){
      currentLevel = level2;
      $('#map').css('background-image','url("img/level2.png")');
      currentLevelColors = 3;
-
    }else{
      currentLevel = level2;
      $('#map').css('background-image','url("img/level2.png")');
       currentLevelColors = 3;
-
    }
 
+   //chosing a difficulty
    var radioVal = $('#start-screen input:radio:checked').val();
    difficulty = radioVal;
 
@@ -88,7 +57,20 @@ function startMenu(){
 
    });
 
+}
+//laod all sounds
+function loadSounds () {
+  ion.sound({
+    sounds: [{name: "pirate", volume: 0.5},
+    {name: "riverFull"},
+    {name: "seasong"},
+    {name: "tap"},
+    {name: "bell", volume: 1.4}  ],
 
+    path: "ionsound/sounds/",
+    preload: true,
+    volume: 1.0
+  });
 }
 
 
@@ -117,20 +99,22 @@ function init(){
   createSwitches();
 
   render(currentLevel);//Initial rendering of level
+
+  //INIT UPDATES
   setInterval(update, speedUpdate); //Update boat movement every second
   setInterval(timerUpdate,1000); //Update timer
 
-  //Add click events to all railRoad Switches:
-  logs.forEach(function (railSwitch){
-    $(railSwitch.body).on('click',function(){
+  //Add click events to all logs:
+  logs.forEach(function (log){
+    $(log.body).on('click',function(){
 
-      railSwitch.toggleState();
-      currentLevel[railSwitch.y][railSwitch.x] = railSwitch.currentState;
+      log.toggleState();
+      currentLevel[log.y][log.x] = log.currentState;
       render(currentLevel);
     });
   });
 
-  initPortColors();
+  initPortColors();//initialize ports with colors
 }
 
 function initPortColors(){
@@ -143,24 +127,25 @@ function initPortColors(){
 
 
 //************************************************************ ->  UPDATE
-function update(){
 
-  //Delete boats:
+function update(){
+  //Delete boats that are reached their destination:
   boats = boats.filter(function(boat){
     return !(boat.finished);
   });
-
 
   //Move all boats:
   boats.forEach(function(boat){
         moveBoat(boat);
   });
 
+  //Generate new boats
   createBoats(currentLevelColors);//Create New Boats
 
 
 }
 
+//Update the timer
 function timerUpdate(){
   if(timer.time > 0){
     timer.time --; //Decrese time
@@ -168,6 +153,7 @@ function timerUpdate(){
   }
 }
 
+//Update the score
 function scoreUpdate(){
   $(score.html).html(score.correct + " of " + score.total);//Update Score on DOM
   if( timer.time === 0 &&  boats.length === 0 ){
@@ -179,18 +165,19 @@ function scoreUpdate(){
 
 var funcCalledcounter = 2;//temp counter for spawning boats
 
+//Generate boats
 function createBoats(colorsAmount){
-  funcCalledcounter ++ ;
+  funcCalledcounter ++ ; //Counter to keep track how many times function was called
   if(funcCalledcounter % (5 - difficulty) !==0   ||   timer.time === 0){
     return;
-  }
+  }//Define generaiton intensity based on chosen difficulty
 
-  var color = Math.floor(Math.random() * (colorsAmount + 1));
-  var newBoat = new Boat (start.x, start.y, color);
+  var color = Math.floor(Math.random() * (colorsAmount + 1)); //Random color
+  var newBoat = new Boat (start.x, start.y, color); //Create a new boat
 
-  rotate(newBoat, 90);//TEMPRORY (s> right start only, have to move this into moveBoat
-  $(newBoat.body).css('background-image', 'url("img/boat'+ color +'.png")');
-  boats.push( newBoat );
+  rotate(newBoat, 90);//TEMP(s> right start only, ~late move this into moveBoat func)
+  $(newBoat.body).css('background-image', 'url("img/boat'+ color +'.png")');//assign image of boat based on color
+  boats.push( newBoat );//push to global boats array
 
 }
 //***************************************************************   -> GAME Ending
@@ -200,12 +187,13 @@ function checkForWin(){
   if(!win){
     win = true;
     console.log('checkForWin');
-    $('#end-screen').fadeIn(1000);//Show win popup
+    $('#end-screen').fadeIn(1000);//Show winer popup
 
-    score.perc = Math.floor(score.correct/score.total * 100) ;
+    score.perc = Math.floor(score.correct/score.total * 100) ;//calculate score in percenateges
     var winText = 'Your Score is: ' + score.correct + ' of ' + score.total + '<br> ( ' + score.perc + '% )';
-    $('#end-screen h2').html(winText);
+    $('#end-screen h2').html(winText); // Add a score heding to winner popup
 
+    //Show a resulting message based on your score
     if (score.perc === 100){
       setTimeout(function(){$('#end-screen p').html('PERFECT! You play like a GOD!');},3000);
       addStars(3);
@@ -227,6 +215,7 @@ function checkForWin(){
 
 }
 
+//Final results show how many stars you earned:
 function addStars(count){
  if(count > 0){
    setTimeout(function(){$('#end-screen .glyphicon:nth-child('+ 2 +')').addClass('star-active');},1000);
@@ -241,7 +230,7 @@ function addStars(count){
 
 
 //************************************************************ ->  RENDER GRID
-
+//Creating a grid:
 function createGrid(level){
   var tileHtml = '';
 
@@ -275,15 +264,7 @@ var htmlTile;
           start.x = x;
           start.y = y;
           start.body = tileDOM;
-          // if(tile === 's>'){
-          //   start.direction = 1;//Start to the right
-          // } else{
-          //   start.direction = -1;//Start to the left
-          // }
         }
-
-        // $(tileDOM).attr('class', 'tile pos'+ y + x);//Clear all classes
-        // $(tileDOM).addClass( tile2class(tile) );
       }
     });
   });
